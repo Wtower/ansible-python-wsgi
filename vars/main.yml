@@ -1,0 +1,11 @@
+---
+# Default directory name to download wsgi
+# Use /tmp in order to avoid keeping
+wsgi_src: ~/mod_wsgi_src
+
+# Which wsgi version
+wsgi_ver: 4.4.21
+
+# Default latest Python version
+# Has to be in form d.d as exists in deadsnakes ppa
+python_version: 3.5

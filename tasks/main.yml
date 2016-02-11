@@ -1,0 +1,56 @@
+---
+# Installs WSGI by compiling with a custom Python version.
+
+- name: Remove previous wsgi
+  apt: name=libapache2-mod-wsgi state=absent
+  become: true
+
+- name: Install prerequisites
+  apt: name=apache2-dev state=present
+  become: true
+
+- name: Create directory to obtain wsgi
+  file: path="{{ wsgi_src }}" state=directory
+
+- name: Download WSGI
+  unarchive:
+    src: "https://github.com/GrahamDumpleton/mod_wsgi/archive/{{ wsgi_ver }}.tar.gz"
+    dest: "{{ wsgi_src }}"
+    copy: no
+
+- name: Configure WSGI
+  shell: "./configure --with-python=/usr/bin/python{{ python_version }}"
+  args:
+    chdir: "{{ wsgi_src }}"
+
+- name: Build WSGI
+  command: make
+  args:
+    chdir: "{{ wsgi_src }}"
+
+- name: Install WSGI
+  command: make install
+  args:
+    chdir: "{{ wsgi_src }}"
+  become: true
+
+# https://code.google.com/p/modwsgi/wiki/InstallationIssues
+- name: Disable Python Apache module
+  apache2_module: name=python state=absent
+  become: true
+
+- name: Enable WSGI Apache module
+  apache2_module: name=wsgi state=present
+  become: true
+
+- name: Restart Apache
+  service: name=apache2 state=restarted
+  become: true
+
+- name: Check error log
+  command: tail /var/log/apache2/error.log
+  register: log
+  become: true
+
+- name: Debug info
+  debug: msg="{{ log }}"

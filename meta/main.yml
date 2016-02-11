@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: George Karakostas
-  description: installs WSGI by compiling with a custom Python version
+  description: Installs WSGI by compiling with a custom Python version
   company: 9dev
   license: BSD
   min_ansible_version: 2.1

@@ -2,7 +2,7 @@
 python-wsgi
 ===========
 
-Ansible role to installs WSGI by compiling with a custom Python version.
+Ansible role to install WSGI by compiling with a custom Python version.
 
 Django case
 -----------
